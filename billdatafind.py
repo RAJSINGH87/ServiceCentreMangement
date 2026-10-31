@@ -1,0 +1,95 @@
+import tkinter
+from tkinter import*
+from tkinter import messagebox
+from tkinter import ttk
+import pymysql
+def showbilldatafind():
+    t=tkinter.Tk()
+    t.geometry ('700x700')
+    t.title('bill')
+    t.config(bg='purple')
+    r=Label(t,text='billdata Find Form',font=('arial',20),fg='black',bg='yellow')
+    r.place(x=120,y=10)
+        
+    def finddata():
+        db=pymysql.connect(host='localhost',user='root',password='root',database='scm')
+        cur=db.cursor()
+        xa=int(e1.get())
+        sql="select billno,billdate,callid,custid,engid,serviceid,discount,paymentstatus  from billdata where billid=%d" %(xa)
+        cur.execute(sql)
+        data=cur.fetchone()
+        e2.insert(0,data[0])
+        e3.insert(0,data[1])
+        e4.insert(0,data[2])
+        e5.insert(0,data[3])
+        e6.insert(0,data[4])
+        e7.insert(0,data[5])
+        e8.insert(0,data[6])
+        e9.insert(0,data[7])
+        db.close()
+    def newdata():
+        e2.delete(0,END)
+        e3.delete(0,END)
+        e4.delete(0,END)
+        e5.delete(0,END)
+        e6.delete(0,END)
+        e7.delete(0,END)
+        e8.delete(0,END)
+        e9.delete(0,END)
+    def filldata():
+        db=pymysql.connect(host='localhost',user='root',password='root',database='scm')
+        cur=db.cursor()
+        sql="select billid from billdata"
+        cur.execute(sql)
+        m=[]
+        data=cur.fetchall()
+        for r in data:
+            m.append(r[0])
+            db.close()
+            e1['values']=m
+            
+    a=Label(t,text='billid',bg='teal',fg='white')
+    a.place(x=50,y=50)
+    e1=ttk.Combobox(t)
+    e1.place(x=400,y=50)
+    b=Label(t,text='billno',bg='teal',fg='white')
+    b.place(x=50,y=90)
+    e2=Entry(t,width=20)
+    e2.place(x=400,y=90)
+    c=Label(t,text='billdate',bg='teal',fg='white')
+    c.place(x=50,y=150)
+    e3=Entry(t,width=30)
+    e3.place(x=400,y=150)
+    d=Label(t,text='callid',bg='teal',fg='white')
+    d.place(x=50,y=220)
+    e4=Entry(t,width=30)
+    e4.place(x=400,y=220)
+    f=Label(t,text='custid',bg='teal',fg='white')
+    f.place(x=50,y=300)
+    e5=Entry(t,width=20)
+    e5.place(x=400,y=300)
+    g=Label(t,text='engid',bg='teal',fg='white')
+    g.place(x=50,y=390)
+    e6=Entry(t,width=30)
+    e6.place(x=400,y=390)
+    h=Label(t,text='serviceid',bg='teal',fg='white')
+    h.place(x=50,y=450)
+    e7=Entry(t,width=30)
+    e7.place(x=400,y=450)
+    i=Label(t,text='discount',bg='teal',fg='white')
+    i.place(x=50,y=520)
+    e8=Entry(t,width=30)
+    e8.place(x=400,y=520)
+    j=Label(t,text='payment status',bg='teal',fg='white')
+    j.place(x=50,y=550)
+    e9=Entry(t,width=30)
+    e9.place(x=400,y=550)
+       
+    
+    b1=Button(t,text='find',bg='green',command=finddata,width=20)
+    b1.place(x=50,y=600)
+    b2=Button(t,text='new',command=newdata,bg='red',width=20)
+    b2.place(x=400,y=600)
+    filldata()
+    t.mainloop()
+    
